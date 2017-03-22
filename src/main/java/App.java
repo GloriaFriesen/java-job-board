@@ -10,12 +10,44 @@ public class App {
     staticFileLocation("/public");
     String layout = "templates/layout.vtl";
     ArrayList<JobOpening> jobsArray = new ArrayList<JobOpening>();
+    ArrayList<City>cities = new ArrayList<City>();
 
     get("/", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/index.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    // get("/cities", (request, response) -> {
+    //   Map<String, Object> model = new HashMap<String, Object>();
+    //   model.put("template", "templates/cities.vtl");
+    //   model.put("cities", City.all());
+    //   return new ModelAndView(model, layout);
+    // }, new VelocityTemplateEngine());
+
+    get("/cities/new", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/city-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/cities", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      String cityName = request.queryParams("city");
+      City newCity = new City(cityName);
+      model.put("cities", City.all());
+      model.put("template", "templates/cities.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("cities/:id", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      City city = City.find(Integer.parseInt(request.params(":id")));
+      model.put("city", city);
+      model.put("template", "templates/city.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
 
     get("/jobList", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();

@@ -1,0 +1,12 @@
+<!--category.vtl-->
+<h1>$city.getName() jobs:</h1>
+
+<ul>
+  #foreach($city in $city.getTasks())
+   <li><a href="/jobs/$city.getId()">$city.getDescription()</a></li>
+  #end
+</ul>
+
+<a href="/cities/$city.getId()/jobs/new">Add a new city</a>
+<a href="/cities">All cities</a>
+<!--city.vtl-->
